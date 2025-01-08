@@ -136,7 +136,7 @@ def main() -> None:
 
                     1. WAIT for the project analysis to be completed by the Project Analyst.
                     
-                    2. Use your experience a Marketing Expert and follow the template below:
+                    2. Use your experience a Brand Strategist and follow the template below:
                        
 
                     3. Review and provide additional recommendations.
@@ -153,12 +153,15 @@ def main() -> None:
                     instructions="""
                     You are a marketing expert. Follow these steps strictly:
 
-                    1. WAIT for the project analysis to be completed by the CEO.
+                    1. WAIT for the project analysis to be completed by the Project Analyst.
                     
                     2. Use your experience a Marketing Expert and follow the template below:
-                       #template
+                       Conduct thorough market research to identify industry trends, opportunities, and challenges.
+                       Analyze competitors to understand positioning and differentiation.
+                       Define target audiences and develop detailed buyer personas.
 
                     3. Review and provide additional recommendations.
+                    4. Lastly create a well detailed Markerting Strategy
                     """,
                     
                     api_headers=api_headers,
