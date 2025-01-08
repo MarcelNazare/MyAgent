@@ -137,9 +137,22 @@ def main() -> None:
                     1. WAIT for the project analysis to be completed by the Project Analyst.
                     
                     2. Use your experience a Brand Strategist and follow the template below:
+                        create a brand strategy for this brand and provide all relevant information following this specific template, ", include the following, tagline, vision, mission, brand purpose statement, values, tone and voice, brand messaging, emotional and non emotional benefits, brand personality, target audience brand positioning statement, brand archetype(Purpose, Core Desire, Goal, Fear, Strategy, Gift and Motivation), and psychographics (Motivations, Values and Needs) and demographics, 3 customer personas(Outline their needs, motivation, fears and pain points), who are you and  who are you not, 1st person vs 3rd person specification, differentiators
+
+                        After the the brand strategy answer the following questions and refine the brand strategy
+
+                        - Why are we here?
+                        - Who are we we here for ? and how it will benefit them
+                        - Where are we going ?
+                        - What are we committed to ?
+                        - How are we different ?
+                        - Why should they care (the people we are building the brand for) ?
+                        - What’s our personality ?
+                        - What’s our message ?
                        
 
                     3. Review and provide additional recommendations.
+                    4. Create a well detailed brand strategy
                     """,
                     
                     api_headers=api_headers,
@@ -153,7 +166,7 @@ def main() -> None:
                     instructions="""
                     You are a marketing expert. Follow these steps strictly:
 
-                    1. WAIT for the project analysis to be completed by the Project Analyst.
+                    1. WAIT for the brand strategy  to be completed by the Brand Strategist.
                     
                     2. Use your experience a Marketing Expert and follow the template below:
                        Conduct thorough market research to identify industry trends, opportunities, and challenges.
@@ -161,7 +174,7 @@ def main() -> None:
                        Define target audiences and develop detailed buyer personas.
 
                     3. Review and provide additional recommendations.
-                    4. Lastly create a well detailed Markerting Strategy
+                    4. Lastly create a well detailed Markerting Strategy make sure you include outbound and inbound strategies
                     """,
                     
                     api_headers=api_headers,
@@ -175,10 +188,27 @@ def main() -> None:
                     instructions="""
                     You are a marketing expert. Follow these steps strictly:
 
-                    1. WAIT for the project analysis to be completed by the CEO.
+                    1. WAIT for the brand strategy  to be completed by the Brand Strategist.
                     
-                    2. Use your experience a Marketing Expert and follow the template below:
-                       #template
+                    2. Create a well detailed sales strategy for the brand.
+
+                    3. Review and provide additional recommendations.
+                    """,
+                    
+                    api_headers=api_headers,
+                    temperature=0.7,
+                    max_prompt_tokens=25000
+                )
+                ### Content Strategist
+                content_strategist = Agent(
+                    name="Content Creation Strategist",
+                    description="Senior Marketing Expert who specialises in Marketing.",
+                    instructions="""
+                    You are a marketing expert. Follow these steps strictly:
+
+                    1. WAIT for the brand strategy  to be completed by the Brand Strategist.
+                    
+                    2. Create a well detailed content strategy for the brand.
 
                     3. Review and provide additional recommendations.
                     """,
@@ -194,7 +224,8 @@ def main() -> None:
                         project_analyst, brand_strategist,marketing_strategist,sales_strategist, 
                         [project_analyst,brand_strategist],
                         [project_analyst, marketing_strategist],
-                        [project_analyst, sales_strategist]
+                        [project_analyst, sales_strategist],
+                        [project_analyst, content_strategist]
                   
                     ],
                     async_mode='threading',
@@ -213,7 +244,7 @@ def main() -> None:
 
                 st.session_state.messages.append({"role": "user", "content": str(project_info)})
                 # Create tabs and run analysis
-                with st.spinner("AI Services Agency is analyzing your project..."):
+                with st.spinner("AI  Agency is analyzing your project..."):
                     try:
                         # Get analysis from each agent using agency.get_completion()
                         project_analyst_response = agency.get_completion(
@@ -227,26 +258,26 @@ def main() -> None:
                         )
                         
                         brand_strategist_response = agency.get_completion(
-                            message=f"""Review the project analysis and create technical specifications using the CreateTechnicalSpecification tool.
-                            Choose the most appropriate:
-                            - architecture_type (monolithic/microservices/serverless/hybrid)
-                            - core_technologies (comma-separated list)
-                            - scalability_requirements (high/medium/low)
-                            
-                            Base your choices on the project requirements and analysis.""",
+                            message=f"Review the project analysis and create a proper brand strategy that is well detailed",
                             recipient_agent=brand_strategist
                         )
                         
-                        sales_strategist_response = agency.get_completion(
-                            message=f"Analyze project management aspects: {str(project_info)}",
-                            recipient_agent=sales_strategist,
-                            additional_instructions="Focus on product-market fit and roadmap development, and coordinate with technical and marketing teams."
+                        marketing_strategist_response = agency.get_completion(
+                            message=f"Analyze brand strategy management aspects: {str(project_info)}",
+                            recipient_agent=marketing_strategist,
+                            additional_instructions="Focus on the aspects that make a great market strategy document"
                         )
 
-                        marketing_strategist_response = agency.get_completion(
-                            message=f"Analyze project management aspects: {str(project_info)}",
-                            recipient_agent=marketing_strategist,
-                            additional_instructions="Focus on product-market fit and roadmap development, and coordinate with technical and marketing teams."
+                        sales_strategist_response = agency.get_completion(
+                            message=f"Analyze marketing aspects: {str(project_info)}",
+                            recipient_agent=sales_strategist,
+                            additional_instructions="Focus on the aspects that make a great sales strategy document"
+                        )
+
+                        content_strategist_response = agency.get_completion(
+                            message=f"Analyze project analysis, brand strategy and marketing strategy aspects: {str(project_info)}",
+                            recipient_agent=content_strategist,
+                            additional_instructions="Focus on the aspects that make a great content strategy document"
                         )
                         
                         # Create tabs for different analyses
@@ -255,6 +286,7 @@ def main() -> None:
                             "Brand Strategist Brand Stragy",
                             "Marketing Strategists Marketing Strategy",
                             "Sales Strategists Sales Strategy"
+                            "Content Strategists Content Strategy"
                           
                         ])
                         
@@ -277,7 +309,12 @@ def main() -> None:
                             st.markdown("## Sales Strategists Sales Strategy")
                             st.markdown(sales_strategist_response)
                             st.session_state.messages.append({"role": "assistant", "content": sales_strategist_response})
- 
+
+                        with tabs[4]:
+                            st.markdown("## Content Strategists Content Strategy")
+                            st.markdown(content_strategist_response)
+                            st.session_state.messages.append({"role": "assistant", "content": content_strategist_response}) 
+
 
                     except Exception as e:
                         st.error(f"Error during analysis: {str(e)}")
