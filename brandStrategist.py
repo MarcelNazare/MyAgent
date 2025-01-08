@@ -137,7 +137,7 @@ def main() -> None:
                     1. WAIT for the project analysis to be completed by the Project Analyst.
                     
                     2. Use your experience a Marketing Expert and follow the template below:
-                       #template
+                       
 
                     3. Review and provide additional recommendations.
                     """,
