@@ -117,6 +117,7 @@ def main() -> None:
                        - project_name: The name from the project details
                        - project_description: The full project description
                        - budget_range: The specified budget range
+                       
 
                     2. WAIT for the analysis to complete before proceeding.
                     
@@ -172,6 +173,7 @@ def main() -> None:
                        Conduct thorough market research to identify industry trends, opportunities, and challenges.
                        Analyze competitors to understand positioning and differentiation.
                        Define target audiences and develop detailed buyer personas.
+                       Do a SWOT analysis and outine how the brand can maximize on its weaknesses and strengths in the Market
 
                     3. Review and provide additional recommendations.
                     4. Lastly create a well detailed Markerting Strategy make sure you include outbound and inbound strategies
